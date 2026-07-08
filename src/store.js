@@ -1,6 +1,111 @@
 ﻿import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+// Generate default roadmap for 12 months, 4 weeks each, with structured tasks
+const generateDefaultRoadmap = () => {
+  const roadmap = {};
+  for (let m = 1; m <= 12; m++) {
+    roadmap[m] = {};
+    for (let w = 1; w <= 4; w++) {
+      roadmap[m][w] = {
+        Senin: '',
+        Selasa: '',
+        Rabu: '',
+        Kamis: '',
+        Jumat: '',
+        Sabtu: '',
+        Minggu: ''
+      };
+
+      // Define default tasks per month/week
+      if (m === 1) {
+        if (w === 1) {
+          roadmap[m][w] = {
+            Senin: 'Riset niche (real estate/home services) & kumpulkan 5-10 referensi desain top performer (ATM: Amati)',
+            Selasa: 'Wireframe halaman home portofolio #1 ΓÇö struktur section, copy placeholder',
+            Rabu: 'Build halaman home di Framer ΓÇö layout, komponen dasar',
+            Kamis: 'Build halaman kedua (listing/services) + styling',
+            Jumat: 'Build halaman ketiga (contact/about) + responsive check',
+            Sabtu: 'Polish keseluruhan ΓÇö animasi ringan, micro-interaction, copywriting final (3 jam)',
+            Minggu: 'Review portofolio #1, catat kekurangan. Evaluasi mingguan CapCut & YT'
+          };
+        } else if (w === 2) {
+          roadmap[m][w] = {
+            Senin: 'Build portofolio #2 (niche sama, use case berbeda, pakai komponen dari portofolio #1) - Hari 1',
+            Selasa: 'Build portofolio #2 (niche sama, use case berbeda, pakai komponen dari portofolio #1) - Hari 2',
+            Rabu: 'Build portofolio #2 (niche sama, use case berbeda, pakai komponen dari portofolio #1) - Hari 3',
+            Kamis: 'Build portofolio #3 (variasi ketiga / sub-niche spesifik) - Hari 1',
+            Jumat: 'Build portofolio #3 (variasi ketiga / sub-niche spesifik) - Hari 2',
+            Sabtu: 'Siapkan materi outreach ΓÇö screenshot showcase, 1 halaman case study per portofolio, 2-3 draft pesan outreach',
+            Minggu: 'Review semua portofolio, pastikan siap outreach minggu depan. Evaluasi mingguan CapCut & YT'
+          };
+        } else {
+          roadmap[m][w] = {
+            Senin: '1-2 jam: Apply/outreach aktif (target 5-10 kontak di FB/subreddits/cold DM) | 2-3 jam: Polish portofolio | 1 jam: Follow-up',
+            Selasa: '1-2 jam: Apply/outreach aktif (target 5-10 kontak di FB/subreddits/cold DM) | 2-3 jam: Polish portofolio | 1 jam: Follow-up',
+            Rabu: '1-2 jam: Apply/outreach aktif (target 5-10 kontak di FB/subreddits/cold DM) | 2-3 jam: Polish portofolio | 1 jam: Follow-up',
+            Kamis: '1-2 jam: Apply/outreach aktif (target 5-10 kontak di FB/subreddits/cold DM) | 2-3 jam: Polish portofolio | 1 jam: Follow-up',
+            Jumat: '1-2 jam: Apply/outreach aktif (target 5-10 kontak di FB/subreddits/cold DM) | 2-3 jam: Polish portofolio | 1 jam: Follow-up',
+            Sabtu: 'Framer 3 jam (polish/materi outreach ΓÇö batch, bukan harian)',
+            Minggu: 'Review outreach & follow up, evaluasi mingguan CapCut & YT'
+          };
+        }
+      } else if (m === 2) {
+        roadmap[m][w] = {
+          Senin: 'Kirim outreach aktif ke 10 target bisnis lokal baru (FB Group / Subreddit / Google Maps)',
+          Selasa: 'Outreach aktif 10 kontak baru + follow-up prospek hari kemarin',
+          Rabu: 'Outreach aktif 10 kontak baru. Kerjakan project test-task atau negosiasi jika ada respon',
+          Kamis: 'Outreach aktif 10 kontak baru + tawarkan free audit untuk website bisnis lokal yang buruk',
+          Jumat: 'Outreach aktif 10 kontak baru + follow-up massal seluruh kontak minggu ini',
+          Sabtu: 'Sesi Polish & review portfolio Framer. Target closing klien pertama senilai $300',
+          Minggu: 'Istirahat total + review mingguan perkembangan CapCut & YT'
+        };
+      } else if (m >= 3 && m <= 4) {
+        roadmap[m][w] = {
+          Senin: 'Outreach bisnis menengah (LinkedIn / Cold Email). Target rate per project naik ke $500',
+          Selasa: 'Outreach 10 kontak baru + follow-up. Desain halaman template Framer komersial pertama',
+          Rabu: 'Outreach 10 kontak baru. Lanjutkan build template Framer komersial (landing page + subpages)',
+          Kamis: 'Outreach 10 kontak baru. Hubungi agensi web design untuk tawarkan jasa sub-kontrak Framer',
+          Jumat: 'Outreach 10 kontak baru + follow-up. Selesaikan build template Framer komersial',
+          Sabtu: 'Publish/upload template Framer ke platform directory / Gumroad untuk passive income',
+          Minggu: 'Evaluasi performa bulanan, target income bulanan menembus $800'
+        };
+      } else if (m >= 5 && m <= 6) {
+        roadmap[m][w] = {
+          Senin: 'Outreach 5 kontak premium + buat postingan progress design di Twitter/X untuk exposure',
+          Selasa: 'Outreach 5 kontak premium. Kerjakan project klien berjalan (Rate target $800/project)',
+          Rabu: 'Outreach 5 kontak premium. Lanjutkan pengerjaan website klien / update template',
+          Kamis: 'Outreach 5 kontak premium. Share tips Framer atau design showcase di Twitter/X / LinkedIn',
+          Jumat: 'Outreach 5 kontak premium + follow-up. Selesaikan & kirim draft website ke klien',
+          Sabtu: 'Tulis 1 tutorial pendek Framer atau rekap mingguan sebagai branding expert',
+          Minggu: 'Review mingguan & istirahat total, target income $1000 - $1500/bulan'
+        };
+      } else if (m >= 7 && m <= 9) {
+        roadmap[m][w] = {
+          Senin: 'Outreach target agensi & bisnis kelas menengah atas (Target rate $1000 - $1500/project)',
+          Selasa: 'Outreach premium. Kerjakan project klien berjalan. Buat penawaran retainer bulanan',
+          Rabu: 'Outreach premium. Tawarkan paket maintenance bulanan $100/bulan ke seluruh mantan klien',
+          Kamis: 'Outreach premium + share studi kasus kesuksesan proyek sebelumnya di sosial media',
+          Jumat: 'Outreach premium + follow-up. Finalisasi proyek klien berjalan',
+          Sabtu: 'Audit website prospek potensial secara detail untuk dikirim hari Senin depan',
+          Minggu: 'Evaluasi finansial bulanan, target income $1500 - $2500/bulan'
+        };
+      } else {
+        roadmap[m][w] = {
+          Senin: 'Outreach target enterprise / agensi skala besar untuk project high-ticket ($2000+)',
+          Selasa: 'Fokus pengerjaan project high-ticket berjalan. Kelola retainer maintenance',
+          Rabu: 'Review retainer bulanan. Jika overload, delegasikan tugas minor ke rekan/freelancer lain',
+          Kamis: 'Branding pasif di platform global. Kerjakan proyek high-ticket',
+          Jumat: 'Outreach premium + follow-up. Selesaikan proyek mingguan',
+          Sabtu: 'Scale up portfolio premium. Lakukan audit performa bisnis 12 bulan terakhir',
+          Minggu: 'Evaluasi pencapaian target $3000/bulan, istirahat dan nikmati pencapaian'
+        };
+      }
+    }
+  }
+  return roadmap;
+};
+
 const initialIntentions = [
   { id: 1, when: 'PAGI', trigger: 'sudah sarapan dan duduk di meja', response: 'langsung buka Suno dan generate 1 track ΓÇö sebelum buka sosmed apapun.', note: '≡ƒÉ¿ Koala: trigger fisik (duduk) lebih kuat dari trigger waktu. ≡ƒªà Elang: urutan jelas = tidak ada decision fatigue.' },
   { id: 2, when: 'PAGI', trigger: 'sudah duduk di jam kerja Framer', response: 'langsung buka file portofolio/outreach terakhir ΓÇö sebelum cek sosmed apa pun.', note: 'ΓÜí Fokus Baru' },
@@ -10,9 +115,11 @@ const initialIntentions = [
 
 const initialLadder = [
   { id: 1, stageNum: 'Bulan 1', stageName: 'Portofolio Framer', skill: 'Portofolio Framer siap (3 buah), mulai outreach. Target closing: 0-1 klien. CapCut & YT tetap jalan maintenance.', income: '0-1 Klien' },
-  { id: 2, stageNum: 'Bulan 2', stageName: 'Closing Pertama', skill: 'Closing klien pertama. CapCut & YT tetap jalan maintenance.', income: 'Klien #1' },
-  { id: 3, stageNum: 'Bulan 3-4', stageName: 'Scaling Project', skill: 'Closing klien ke-2, ke-3. Mulai bisa hitung rate per project.', income: 'Rate/Project' },
-  { id: 4, stageNum: 'Bulan 5-6', stageName: 'Stabil Income', skill: 'Stabil di $300-1000/bln dari 2-3 klien berjalan. Mulai sisihkan sedikit waktu untuk exposure pasif jangka panjang.', income: '$300-1000/mo' }
+  { id: 2, stageNum: 'Bulan 2', stageName: 'Closing Pertama', skill: 'Closing klien pertama. CapCut & YT tetap jalan maintenance.', income: 'Klien #1 ($300)' },
+  { id: 3, stageNum: 'Bulan 3-4', stageName: 'Scaling Project', skill: 'Closing klien ke-2, ke-3. Rate $500/project. Mulai dapat passive income template.', income: '$500-1000/mo' },
+  { id: 4, stageNum: 'Bulan 5-6', stageName: 'Stabil Income', skill: 'Stabil di $1000-1500/bln dari 2-3 klien berjalan + template sales.', income: '$1000-1500/mo' },
+  { id: 5, stageNum: 'Bulan 7-9', stageName: 'High-Ticket retainer', skill: 'Closing project $1000+ dan retainer bulanan $100/bln.', income: '$1500-2500/mo' },
+  { id: 6, stageNum: 'Bulan 10-12', stageName: 'Agency & retainers', skill: 'Stabil retainers + high-ticket project. Pemasukan konsisten menembus $3000/bln.', income: '$3000+/mo' }
 ];
 
 const initialDaily = [
@@ -209,10 +316,45 @@ export const useStore = create(
         } else {
           return { deepWorkLogs: [...state.deepWorkLogs, { date: todayStr, minutes }] };
         }
+      }),
+
+      // Framer Roadmap (12 Months * 4 Weeks * 7 Days)
+      framerRoadmap: generateDefaultRoadmap(),
+      updateRoadmapTask: (month, week, day, text) => set((state) => {
+        const updated = { ...state.framerRoadmap };
+        if (!updated[month]) updated[month] = {};
+        if (!updated[month][week]) updated[month][week] = {};
+        updated[month][week][day] = text;
+        return { framerRoadmap: updated };
+      }),
+      resetRoadmap: () => set({ framerRoadmap: generateDefaultRoadmap() }),
+
+      // Reset all defaults helper
+      resetAllDefaults: () => set({
+        notepad: initialNotepad,
+        pinnedActions: {
+          today: 'Riset niche Framer (real estate/home services) + kumpulkan 5-10 referensi desain top performer',
+          week: 'Selesaikan Portofolio Framer #1 (3 halaman: home, listing/services, contact)'
+        },
+        intentions: initialIntentions,
+        ladder: initialLadder,
+        currentLadderStage: 1,
+        dailyBlocks: initialDaily,
+        weeklyReviews: initialWeeklyReviews,
+        trackers: initialTrackers,
+        reframes: initialReframes,
+        coveyMatrix: initialCovey,
+        mistakes: initialMistakes,
+        blocklist: initialBlocklist,
+        rewards: initialRewards,
+        auditTasks: initialAuditTasks,
+        quickTasks: [],
+        deepWorkLogs: [],
+        framerRoadmap: generateDefaultRoadmap()
       })
     }),
     {
-      name: 'life-os-framer-storage',
+      name: 'life-os-cream-storage-v2',
     }
   )
 );
