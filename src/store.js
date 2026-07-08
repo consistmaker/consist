@@ -22,11 +22,11 @@ const generateDefaultRoadmap = () => {
         if (w === 1) {
           roadmap[m][w] = {
             Senin: 'Riset niche (real estate/home services) & kumpulkan 5-10 referensi desain top performer (ATM: Amati)',
-            Selasa: 'Wireframe halaman home portofolio #1 ΓÇö struktur section, copy placeholder',
-            Rabu: 'Build halaman home di Framer ΓÇö layout, komponen dasar',
+            Selasa: 'Wireframe halaman home portofolio #1 â€” struktur section, copy placeholder',
+            Rabu: 'Build halaman home di Framer Î“Ã‡Ã¶ layout, komponen dasar',
             Kamis: 'Build halaman kedua (listing/services) + styling',
             Jumat: 'Build halaman ketiga (contact/about) + responsive check',
-            Sabtu: 'Polish keseluruhan ΓÇö animasi ringan, micro-interaction, copywriting final (3 jam)',
+            Sabtu: 'Polish keseluruhan â€” animasi ringan, micro-interaction, copywriting final (3 jam)',
             Minggu: 'Review portofolio #1, catat kekurangan. Evaluasi mingguan CapCut & YT'
           };
         } else if (w === 2) {
@@ -36,7 +36,7 @@ const generateDefaultRoadmap = () => {
             Rabu: 'Build portofolio #2 (niche sama, use case berbeda, pakai komponen dari portofolio #1) - Hari 3',
             Kamis: 'Build portofolio #3 (variasi ketiga / sub-niche spesifik) - Hari 1',
             Jumat: 'Build portofolio #3 (variasi ketiga / sub-niche spesifik) - Hari 2',
-            Sabtu: 'Siapkan materi outreach ΓÇö screenshot showcase, 1 halaman case study per portofolio, 2-3 draft pesan outreach',
+            Sabtu: 'Siapkan materi outreach â€” screenshot showcase, 1 halaman case study per portofolio, 2-3 draft pesan outreach',
             Minggu: 'Review semua portofolio, pastikan siap outreach minggu depan. Evaluasi mingguan CapCut & YT'
           };
         } else {
@@ -46,7 +46,7 @@ const generateDefaultRoadmap = () => {
             Rabu: '1-2 jam: Apply/outreach aktif (target 5-10 kontak di FB/subreddits/cold DM) | 2-3 jam: Polish portofolio | 1 jam: Follow-up',
             Kamis: '1-2 jam: Apply/outreach aktif (target 5-10 kontak di FB/subreddits/cold DM) | 2-3 jam: Polish portofolio | 1 jam: Follow-up',
             Jumat: '1-2 jam: Apply/outreach aktif (target 5-10 kontak di FB/subreddits/cold DM) | 2-3 jam: Polish portofolio | 1 jam: Follow-up',
-            Sabtu: 'Framer 3 jam (polish/materi outreach ΓÇö batch, bukan harian)',
+            Sabtu: 'Framer 3 jam (polish/materi outreach â€” batch, bukan harian)',
             Minggu: 'Review outreach & follow up, evaluasi mingguan CapCut & YT'
           };
         }
@@ -107,10 +107,10 @@ const generateDefaultRoadmap = () => {
 };
 
 const initialIntentions = [
-  { id: 1, when: 'PAGI', trigger: 'sudah sarapan dan duduk di meja', response: 'langsung buka Suno dan generate 1 track ΓÇö sebelum buka sosmed apapun.', note: '≡ƒÉ¿ Koala: trigger fisik (duduk) lebih kuat dari trigger waktu. ≡ƒªà Elang: urutan jelas = tidak ada decision fatigue.' },
-  { id: 2, when: 'PAGI', trigger: 'sudah duduk di jam kerja Framer', response: 'langsung buka file portofolio/outreach terakhir ΓÇö sebelum cek sosmed apa pun.', note: 'ΓÜí Fokus Baru' },
-  { id: 3, when: 'PAGI', trigger: 'portofolio sudah siap (Minggu 3 dst)', response: 'kirim 5 outreach dulu sebelum kerjakan hal lain di jam Framer.', note: 'ΓÜí Fokus Baru' },
-  { id: 4, when: 'SIANG', trigger: 'jam makan siang dan ada 10 menit', response: 'buka catatan dan tulis 1 kalimat: "Tadi aku sudah [X]. Besok aku akan [Y]."', note: '≡ƒªü Singa: mencatat progress kecil mempertahankan momentum. ≡ƒªà Elang: eksternalisasi pikiran = kepala lebih jernih.' }
+  { id: 1, when: 'PAGI', trigger: 'sudah sarapan dan duduk di meja', response: 'langsung buka Suno dan generate 1 track â€” sebelum buka sosmed apapun.', note: 'Trigger fisik (duduk) lebih kuat dari trigger waktu. Urutan jelas = tidak ada decision fatigue.' },
+  { id: 2, when: 'PAGI', trigger: 'sudah duduk di jam kerja Framer', response: 'langsung buka file portofolio/outreach terakhir â€” sebelum cek sosmed apa pun.', note: 'âš¡ Fokus Baru' },
+  { id: 3, when: 'PAGI', trigger: 'portofolio sudah siap (Minggu 3 dst)', response: 'kirim 5 outreach dulu sebelum kerjakan hal lain di jam Framer.', note: 'âš¡ Fokus Baru' },
+  { id: 4, when: 'SIANG', trigger: 'jam makan siang dan ada 10 menit', response: 'buka catatan dan tulis 1 kalimat: "Tadi aku sudah [X]. Besok aku akan [Y]."', note: 'Mencatat progress kecil mempertahankan momentum. Eksternalisasi pikiran = kepala lebih jernih.' }
 ];
 
 const initialLadder = [
@@ -123,13 +123,13 @@ const initialLadder = [
 ];
 
 const initialDaily = [
-  { id: 1, char: '≡ƒîà', time: '05:00ΓÇô06:00 ┬╖ Pagi', name: 'Creative Block / YT', tasks: ['Render & upload video sesuai jadwal batch ΓÇö TIDAK buka analytics/dashboard hari ini'] },
-  { id: 2, char: 'Γ£é∩╕Å', time: '06:00ΓÇô07:00 ┬╖ Pagi', name: 'Capcut Block', tasks: ['Buat 3-5 template Capcut, upload langsung ΓÇö evaluasi performa hari Minggu saja'] },
-  { id: 3, char: '≡ƒÄ¿', time: 'Framer Block (4-6 jam)', name: 'Framer Development', tasks: ['Kerjakan sesuai Fase & Hari yang ditentukan di tab Jadwal'] }
+  { id: 1, char: 'ðŸŒ…', time: '05:00â€“06:00 Â· Pagi', name: 'Creative Block / YT', tasks: ['Render & upload video sesuai jadwal batch â€” TIDAK buka analytics/dashboard hari ini'] },
+  { id: 2, char: 'âœ‚ï¸', time: '06:00â€“07:00 Â· Pagi', name: 'Capcut Block', tasks: ['Buat 3-5 template Capcut, upload langsung â€” evaluasi performa hari Minggu saja'] },
+  { id: 3, char: 'ðŸŽ¨', time: 'Framer Block (4-6 jam)', name: 'Framer Development', tasks: ['Kerjakan sesuai Fase & Hari yang ditentukan di tab Jadwal'] }
 ];
 
 const initialReframes = [
-  { id: 1, old: 'Aku bersaing dengan expert Framer yang portofolionya sudah bagus dan berpengalaman.', new: 'Aku tidak perlu bersaing di arena yang sama. Cari niche kecil yang belum ramai ΓÇö seperti dulu waktu closing klien pertama lewat FB grup, bukan platform besar penuh senior.' },
+  { id: 1, old: 'Aku bersaing dengan expert Framer yang portofolionya sudah bagus dan berpengalaman.', new: 'Aku tidak perlu bersaing di arena yang sama. Cari niche kecil yang belum ramai â€” seperti dulu waktu closing klien pertama lewat FB grup, bukan platform besar penuh senior.' },
   { id: 2, old: 'Pengeluaran terus naik, pemasukan tidak cukup, aku gagal.', new: 'Aku sedang membangun income stream kedua. Gap finansial adalah motivasi, bukan bukti kegagalan.' },
   { id: 3, old: 'Kompetitor sudah ratusan video, aku baru mulai dari 0.', new: 'Mereka juga pernah di video ke-1. Yang aku perlukan hanya video ke-1 hari ini.' }
 ];
@@ -148,7 +148,7 @@ const initialWeeklyReviews = [
 const initialCovey = {
   q1: ['Pengeluaran otw 4jt per bulan', 'Tambahan Penghasilan $300-1000/bln dari Framer dalam 6 bulan'],
   q2: [
-    'Bangun sedikit exposure pasif Framer di X (posting progress) ΓÇö mulai bulan 4-6, bukan sekarang',
+    'Bangun sedikit exposure pasif Framer di X (posting progress) â€” mulai bulan 4-6, bukan sekarang',
     'Pelajari 1 skill AI-assisted design tambahan per bulan (biar kualitas Framer naik bertahap, bukan sekaligus M-shape)'
   ],
   q3: ['Cek notifikasi sosmed di luar jam kerja', 'Ganti-ganti niche/strategi sebelum 1 siklus penuh selesai'],
@@ -358,3 +358,4 @@ export const useStore = create(
     }
   )
 );
+
