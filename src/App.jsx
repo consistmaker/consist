@@ -14,42 +14,20 @@ const Edit2 = ({ size = 14 }) => (
 
 export default function App() {
   const store = useStore();
-  const [activeView, setActiveView] = useState('workspace'); // workspace or analytics
+  const [activeView, setActiveView] = useState('workspace');
   const [currentUser, setCurrentUser] = useState('ngawurrpp0001@gmail.com');
 
-  // Daily system inputs
-  const [newBlock, setNewBlock] = useState({ char: '≡ƒîà', time: '', name: '', tasks: '' });
+  const [newBlock, setNewBlock] = useState({ char: '🌅', time: '', name: '', tasks: '' });
   const [showAddBlock, setShowAddBlock] = useState(false);
-
-  // Quick tasks inputs
   const [quickInput, setQuickInput] = useState('');
-
-  // Matrix inputs
   const [matrixForm, setMatrixForm] = useState({ q1: '', q2: '', q3: '', q4: '' });
-
-  // Intentions inputs
-  const [intentForm, setIntentForm] = useState({ when: 'PAGI', trigger: '', response: '', note: '' });
-
-  // Mistake inputs
   const [customMistake, setCustomMistake] = useState('');
-
-  // Blocklist inputs
   const [blockInput, setBlockInput] = useState('');
-
-  // Habit tracker input
   const [habitName, setHabitName] = useState('');
-
-  // Rewards inputs
   const [rewardInput, setRewardInput] = useState('');
-
-  // Weekly review inputs
   const [revForm, setRevForm] = useState({ q1: '', q2: '', q3: '' });
-
-  // Reframe inputs
   const [refOld, setRefOld] = useState('');
   const [refNew, setRefNew] = useState('');
-
-  // Custom phase/roadmap edit state
   const [selectedMonth, setSelectedMonth] = useState(1);
   const [selectedWeek, setSelectedWeek] = useState(1);
   const [editingDay, setEditingDay] = useState(null);
@@ -67,7 +45,7 @@ export default function App() {
   const handleAddDailyBlock = () => {
     if (newBlock.name) {
       store.addDailyBlock({ ...newBlock, tasks: newBlock.tasks.split('\n').filter(Boolean) });
-      setNewBlock({ char: '≡ƒîà', time: '', name: '', tasks: '' });
+      setNewBlock({ char: '🌅', time: '', name: '', tasks: '' });
       setShowAddBlock(false);
     }
   };
@@ -83,74 +61,73 @@ export default function App() {
     setEditingText(currentText);
   };
 
+  const coveyMatrix = store.coveyMatrix || { q1: [], q2: [], q3: [], q4: [] };
+
   return (
     <div className="app-container">
       {/* Top Header Controls */}
       <div className="header-meta">
-        <span className="user-email">≡ƒæñ {currentUser}</span>
+        <span className="user-email">👤 {currentUser}</span>
         <div className="header-buttons">
-          <button className="btn-meta" onClick={handleResetDefaults}>≡ƒöä Masukkan Default</button>
+          <button className="btn-meta" onClick={handleResetDefaults}>🔄 Masukkan Default</button>
           <button className="btn-meta" onClick={() => setCurrentUser(currentUser ? '' : 'ngawurrpp0001@gmail.com')}>
-            {currentUser ? '≡ƒÜ¬ Keluar' : '≡ƒöæ Masuk'}
+            {currentUser ? '🚪 Keluar' : '🔑 Masuk'}
           </button>
         </div>
       </div>
 
-      {/* 1. Header / Kategori Utama */}
+      {/* 1. Header */}
       <header className="main-header">
-        <span className="eyebrow">SISTEM HARIAN PERSONAL ΓÇö DIKALIBRASI UNTUK KONDISINU</span>
+        <span className="eyebrow">SISTEM HARIAN PERSONAL — DIKALIBRASI UNTUK KONDISINU</span>
         <h1 className="title-glow">Dari UMR<br />ke <span className="highlight">Top 1% Nasional</span></h1>
         
         <div className="category-row">
-          <span className="chip active">≡ƒÆ╝ KERJA + SURVEY</span>
-          <span className="chip">≡ƒôÜ KULIAH ONLINE</span>
-          <span className="chip">≡ƒÄ╡ YOUTUBE MUSIC</span>
-          <span className="chip">≡ƒæ¿ΓÇì≡ƒæ⌐ΓÇì≡ƒæº KELUARGA + ANAK</span>
-          <span className="chip highlight-chip-framer">≡ƒÄ¿ Framer Template</span>
-          <span className="chip highlight-chip-capcut">Γ£é∩╕Å CapCut</span>
+          <span className="chip active">💼 KERJA + SURVEY</span>
+          <span className="chip">📚 KULIAH ONLINE</span>
+          <span className="chip">🎵 YOUTUBE MUSIC</span>
+          <span className="chip">👨‍👩‍👧 KELUARGA + ANAK</span>
+          <span className="chip highlight-chip-framer">🎨 Framer Template</span>
+          <span className="chip highlight-chip-capcut">✂️ CapCut</span>
         </div>
 
         <p className="subtitle-desc">
-          Kamu punya 4-6 jam/hari untuk Framer, ditambah 1 jam CapCut dan 1 jam YT (maintenance) ΓÇö total ini fokus utama penghasilan tambahan.
+          Kamu punya 4-6 jam/hari untuk Framer, ditambah 1 jam CapCut dan 1 jam YT (maintenance) — total ini fokus utama penghasilan tambahan.
         </p>
       </header>
 
-      {/* Main Tab Switcher */}
+      {/* Tab Switcher */}
       <div className="tab-switcher">
         <button className={`tab-btn orange ${activeView === 'workspace' ? 'active' : ''}`} onClick={() => setActiveView('workspace')}>
-          ≡ƒôü Workspace Utama
+          📁 Workspace Utama
         </button>
         <button className={`tab-btn gray ${activeView === 'analytics' ? 'active' : ''}`} onClick={() => setActiveView('analytics')}>
-          ≡ƒôè Dashboard Analitik
+          📊 Dashboard Analitik
         </button>
       </div>
 
       {activeView === 'workspace' ? (
-        /* ==========================================
-           VIEW: WORKSPACE UTAMA (TWO COLUMNS)
-           ========================================== */
         <div className="workspace-layout">
-          {/* LEFT COLUMN: Input and Schedule */}
+          {/* LEFT COLUMN */}
           <div className="layout-col main-panel">
             
-            {/* 2. Notepad (Catatan Penting) */}
+            {/* Notepad */}
             <div className="card">
               <div className="card-header">
-                <span className="card-icon">≡ƒôä</span>
+                <span className="card-icon">📄</span>
                 <h3 className="card-title">Notepad (Catatan Penting)</h3>
               </div>
               <textarea 
                 className="notepad-textarea" 
-                value={store.notepad} 
+                value={store.notepad || ''} 
                 onChange={e => store.setNotepad(e.target.value)}
                 placeholder="Tulis catatan penting Anda di sini..."
               />
             </div>
 
-            {/* 3. Pinned Actions (Fokus Utama) */}
+            {/* Pinned Actions */}
             <div className="pinned-grid">
               <div className="pinned-card">
-                <div className="pinned-header">≡ƒôî HARI INI</div>
+                <div className="pinned-header">📌 HARI INI</div>
                 <textarea 
                   className="pinned-input" 
                   value={store.pinnedActions?.today || ''} 
@@ -159,7 +136,7 @@ export default function App() {
                 />
               </div>
               <div className="pinned-card">
-                <div className="pinned-header">≡ƒôî MINGGU INI</div>
+                <div className="pinned-header">📌 MINGGU INI</div>
                 <textarea 
                   className="pinned-input" 
                   value={store.pinnedActions?.week || ''} 
@@ -169,12 +146,12 @@ export default function App() {
               </div>
             </div>
 
-            {/* 4. Rencana Pekan Harian (RPH) ΓÇö Senin s/d Jumat */}
+            {/* Jadwal Harian / RPH */}
             <div className="card">
               <div className="card-header" style={{ justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span className="card-icon">≡ƒôà</span>
-                  <h3 className="card-title">Jadwal Harian ΓÇö Rencana Pekan Harian (RPH)</h3>
+                  <span className="card-icon">📅</span>
+                  <h3 className="card-title">Jadwal Harian — Rencana Pekan Harian (RPH)</h3>
                 </div>
                 <button className="btn btn-sm" onClick={() => setShowAddBlock(!showAddBlock)}>
                   <Plus size={14} /> {showAddBlock ? 'Batal' : 'Tambah Blok'}
@@ -193,9 +170,8 @@ export default function App() {
                 </div>
               )}
 
-              {/* Display blocks */}
               <div className="daily-blocks-list">
-                {store.dailyBlocks.map(block => (
+                {(store.dailyBlocks || []).map(block => (
                   <div className="daily-block-card" key={block.id}>
                     <div className="block-meta">
                       <span className="block-icon">{block.char}</span>
@@ -206,7 +182,7 @@ export default function App() {
                     </div>
                     <div className="block-tasks">
                       <ul>
-                        {block.tasks.map((t, idx) => <li key={idx}>ΓÇó {t}</li>)}
+                        {(block.tasks || []).map((t, idx) => <li key={idx}>• {t}</li>)}
                       </ul>
                     </div>
                     <button className="btn-delete-block" onClick={() => store.deleteDailyBlock(block.id)}><Trash2 size={14}/></button>
@@ -214,7 +190,7 @@ export default function App() {
                 ))}
               </div>
 
-              {/* RPH Roadmap (12 Months / 52 Weeks) */}
+              {/* RPH Roadmap */}
               <div className="roadmap-framer-section">
                 <div className="roadmap-controls">
                   <div className="roadmap-select-group">
@@ -236,8 +212,8 @@ export default function App() {
                 </div>
 
                 <div className="roadmap-days-list">
-                  <span className="roadmap-subtitle">≡ƒôà Alokasi Tugas Blok Framer (Bulan {selectedMonth} Minggu {selectedWeek}):</span>
-                  {Object.entries(store.framerRoadmap[selectedMonth]?.[selectedWeek] || {}).map(([day, task]) => (
+                  <span className="roadmap-subtitle">📅 Alokasi Tugas Blok Framer (Bulan {selectedMonth} Minggu {selectedWeek}):</span>
+                  {Object.entries((store.framerRoadmap || {})[selectedMonth]?.[selectedWeek] || {}).map(([day, task]) => (
                     <div key={day} className="roadmap-day-row">
                       <span className="day-name">{day}</span>
                       <div className="day-task-content">
@@ -258,14 +234,13 @@ export default function App() {
                   ))}
                 </div>
               </div>
-
             </div>
 
-            {/* 5. Sabtu & Minggu ΓÇö Berbeda dari Weekday */}
+            {/* Sabtu & Minggu */}
             <div className="card">
               <div className="card-header">
-                <span className="card-icon">≡ƒùô∩╕Å</span>
-                <h3 className="card-title">Sabtu & Minggu ΓÇö Berbeda Dari Weekday</h3>
+                <span className="card-icon">🗓️</span>
+                <h3 className="card-title">Sabtu & Minggu — Berbeda Dari Weekday</h3>
               </div>
               
               <div className="weekend-grid">
@@ -296,100 +271,50 @@ export default function App() {
               </div>
 
               <div className="weekend-notes">
-                <p><strong>Sabtu:</strong> Sesi Framer terpanjang tanpa gangguan (3 jam) untuk polish/materi outreach ΓÇö lakukan secara batch, bukan harian.</p>
+                <p><strong>Sabtu:</strong> Sesi Framer terpanjang tanpa gangguan (3 jam) untuk polish/materi outreach — lakukan secara batch, bukan harian.</p>
                 <p><strong>Minggu:</strong> Hari keluarga murni + review mingguan 15 menit. Tidak ada produksi. Koala butuh hari reset penuh.</p>
               </div>
             </div>
 
-            {/* 6. Prioritas Energi ΓÇö Covey Matrix */}
+            {/* Covey Matrix */}
             <div className="card">
               <div className="card-header">
-                <span className="card-icon">≡ƒÄ»</span>
-                <h3 className="card-title">Prioritas Energi ΓÇö Covey Matrix</h3>
+                <span className="card-icon">🎯</span>
+                <h3 className="card-title">Prioritas Energi — Covey Matrix</h3>
               </div>
-
               <div className="covey-matrix-grid">
-                {/* Q1 */}
-                <div className="covey-quadrant q1">
-                  <span className="q-label">Q1 ┬╖ Lakukan Sekarang (Penting + Mendesak)</span>
-                  <div className="flex-row">
-                    <input className="input-field" style={{ marginBottom: 0, padding: '4px 8px' }} placeholder="Tambah item..." value={matrixForm.q1} onChange={e => setMatrixForm({ ...matrixForm, q1: e.target.value })} onKeyDown={e => e.key === 'Enter' && (store.updateCovey('q1', [...store.coveyMatrix.q1, matrixForm.q1]), setMatrixForm({ ...matrixForm, q1: '' }))} />
-                    <button className="btn btn-sm btn-primary" onClick={() => { if (matrixForm.q1) { store.updateCovey('q1', [...store.coveyMatrix.q1, matrixForm.q1]); setMatrixForm({ ...matrixForm, q1: '' }); } }}><Plus size={14}/></button>
+                {[
+                  { key: 'q1', label: 'Q1 · Lakukan Sekarang (Penting + Mendesak)', cls: 'q1' },
+                  { key: 'q2', label: 'Q2 · Jadwalkan (Penting + Tidak Mendesak)', cls: 'q2' },
+                  { key: 'q3', label: 'Q3 · Batasi (Tidak Penting + Mendesak)', cls: 'q3' },
+                  { key: 'q4', label: 'Q4 · Eliminasi (Tidak Penting + Tidak Mendesak)', cls: 'q4' },
+                ].map(({ key, label, cls }) => (
+                  <div key={key} className={`covey-quadrant ${cls}`}>
+                    <span className="q-label">{label}</span>
+                    <div className="flex-row">
+                      <input className="input-field" style={{ marginBottom: 0, padding: '4px 8px' }} placeholder="Tambah item..."
+                        value={matrixForm[key]}
+                        onChange={e => setMatrixForm({ ...matrixForm, [key]: e.target.value })}
+                        onKeyDown={e => { if (e.key === 'Enter' && matrixForm[key]) { store.updateCovey(key, [...(coveyMatrix[key] || []), matrixForm[key]]); setMatrixForm({ ...matrixForm, [key]: '' }); }}}
+                      />
+                      <button className="btn btn-sm btn-primary" onClick={() => { if (matrixForm[key]) { store.updateCovey(key, [...(coveyMatrix[key] || []), matrixForm[key]]); setMatrixForm({ ...matrixForm, [key]: '' }); }}}><Plus size={14}/></button>
+                    </div>
+                    <ul>
+                      {(coveyMatrix[key] || []).map((item, i) => (
+                        <li key={i}>
+                          <span>{item}</span>
+                          <button className="btn-icon" onClick={() => { const upd = [...(coveyMatrix[key] || [])]; upd.splice(i, 1); store.updateCovey(key, upd); }}><Trash2 size={12}/></button>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul>
-                    {store.coveyMatrix.q1.map((item, i) => (
-                      <li key={i}>
-                        <span>{item}</span>
-                        <button className="btn-icon" onClick={() => {
-                          const updated = [...store.coveyMatrix.q1]; updated.splice(i, 1); store.updateCovey('q1', updated);
-                        }}><Trash2 size={12}/></button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Q2 */}
-                <div className="covey-quadrant q2">
-                  <span className="q-label">Q2 ┬╖ Jadwalkan (Penting + Tidak Mendesak)</span>
-                  <div className="flex-row">
-                    <input className="input-field" style={{ marginBottom: 0, padding: '4px 8px' }} placeholder="Tambah item..." value={matrixForm.q2} onChange={e => setMatrixForm({ ...matrixForm, q2: e.target.value })} onKeyDown={e => e.key === 'Enter' && (store.updateCovey('q2', [...store.coveyMatrix.q2, matrixForm.q2]), setMatrixForm({ ...matrixForm, q2: '' }))} />
-                    <button className="btn btn-sm btn-primary" onClick={() => { if (matrixForm.q2) { store.updateCovey('q2', [...store.coveyMatrix.q2, matrixForm.q2]); setMatrixForm({ ...matrixForm, q2: '' }); } }}><Plus size={14}/></button>
-                  </div>
-                  <ul>
-                    {store.coveyMatrix.q2.map((item, i) => (
-                      <li key={i}>
-                        <span>{item}</span>
-                        <button className="btn-icon" onClick={() => {
-                          const updated = [...store.coveyMatrix.q2]; updated.splice(i, 1); store.updateCovey('q2', updated);
-                        }}><Trash2 size={12}/></button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Q3 */}
-                <div className="covey-quadrant q3">
-                  <span className="q-label">Q3 ┬╖ Batasi (Tidak Penting + Mendesak)</span>
-                  <div className="flex-row">
-                    <input className="input-field" style={{ marginBottom: 0, padding: '4px 8px' }} placeholder="Tambah item..." value={matrixForm.q3} onChange={e => setMatrixForm({ ...matrixForm, q3: e.target.value })} onKeyDown={e => e.key === 'Enter' && (store.updateCovey('q3', [...store.coveyMatrix.q3, matrixForm.q3]), setMatrixForm({ ...matrixForm, q3: '' }))} />
-                    <button className="btn btn-sm btn-primary" onClick={() => { if (matrixForm.q3) { store.updateCovey('q3', [...store.coveyMatrix.q3, matrixForm.q3]); setMatrixForm({ ...matrixForm, q3: '' }); } }}><Plus size={14}/></button>
-                  </div>
-                  <ul>
-                    {store.coveyMatrix.q3.map((item, i) => (
-                      <li key={i}>
-                        <span>{item}</span>
-                        <button className="btn-icon" onClick={() => {
-                          const updated = [...store.coveyMatrix.q3]; updated.splice(i, 1); store.updateCovey('q3', updated);
-                        }}><Trash2 size={12}/></button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Q4 */}
-                <div className="covey-quadrant q4">
-                  <span className="q-label">Q4 ┬╖ Eliminasi (Tidak Penting + Tidak Mendesak)</span>
-                  <div className="flex-row">
-                    <input className="input-field" style={{ marginBottom: 0, padding: '4px 8px' }} placeholder="Tambah item..." value={matrixForm.q4} onChange={e => setMatrixForm({ ...matrixForm, q4: e.target.value })} onKeyDown={e => e.key === 'Enter' && (store.updateCovey('q4', [...store.coveyMatrix.q4, matrixForm.q4]), setMatrixForm({ ...matrixForm, q4: '' }))} />
-                    <button className="btn btn-sm btn-primary" onClick={() => { if (matrixForm.q4) { store.updateCovey('q4', [...store.coveyMatrix.q4, matrixForm.q4]); setMatrixForm({ ...matrixForm, q4: '' }); } }}><Plus size={14}/></button>
-                  </div>
-                  <ul>
-                    {store.coveyMatrix.q4.map((item, i) => (
-                      <li key={i}>
-                        <span>{item}</span>
-                        <button className="btn-icon" onClick={() => {
-                          const updated = [...store.coveyMatrix.q4]; updated.splice(i, 1); store.updateCovey('q4', updated);
-                        }}><Trash2 size={12}/></button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                ))}
               </div>
             </div>
 
-            {/* 7. Protokol Trigger ΓÇö Saat Sendiri + Stres */}
+            {/* Burnout Warning */}
             <div className="card bg-stress">
-              <h4 className="stress-title">≡ƒÜ¿ Protokol Burn Out / Stres</h4>
+              <h4 className="stress-title">🚨 Protokol Burn Out / Stres</h4>
               <p className="stress-desc">
                 Jika merasa stress berlebih/tidak bisa produktif, batasi kerja YT/CapCut ke batas minimal (5 menit cek analitik), cari udara segar, dan hubungi bantuan profesional jika stress menetap &gt; 30 hari.
               </p>
@@ -397,26 +322,26 @@ export default function App() {
 
           </div>
 
-          {/* RIGHT COLUMN: Habits, Analytics & Logs */}
+          {/* RIGHT COLUMN */}
           <div className="layout-col side-panel">
             
-            {/* 15. Analisis Fokus & Deep Work */}
+            {/* Deep Work Console */}
             <div className="card">
               <div className="card-header">
-                <span className="card-icon">ΓÜí</span>
+                <span className="card-icon">⚡</span>
                 <h3 className="card-title">Analisis Fokus & Deep Work</h3>
               </div>
               <DeepWorkConsole store={store} />
             </div>
 
-            {/* 11. Audit Harian (Tugas Utama & Quick tasks) */}
+            {/* Checklist Harian */}
             <div className="card">
               <div className="card-header">
-                <span className="card-icon">Γ£à</span>
+                <span className="card-icon">✅</span>
                 <h3 className="card-title">Tugas Utama (Checklist Harian)</h3>
               </div>
               <div className="checklist-group">
-                {store.auditTasks.map(task => (
+                {(store.auditTasks || []).map(task => (
                   <label key={task.id} className="habit-check-row">
                     <input type="checkbox" checked={task.done} onChange={() => store.toggleAuditTask(task.id)} />
                     <span className={task.done ? 'checked-text' : ''}>{task.text}</span>
@@ -425,13 +350,13 @@ export default function App() {
               </div>
               
               <div style={{ marginTop: '20px', borderTop: '1px solid var(--border)', paddingTop: '16px' }}>
-                <span className="card-subtitle">ΓÜí Tugas Cepat (Quick Tasks)</span>
+                <span className="card-subtitle">⚡ Tugas Cepat (Quick Tasks)</span>
                 <div className="flex-row" style={{ marginTop: '8px', marginBottom: '8px' }}>
-                  <input className="input-field" style={{ marginBottom: 0 }} placeholder="Tambah tugas cepat..." value={quickInput} onChange={e => setQuickInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && (store.addQuickTask(quickInput), setQuickInput(''))} />
+                  <input className="input-field" style={{ marginBottom: 0 }} placeholder="Tambah tugas cepat..." value={quickInput} onChange={e => setQuickInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && quickInput && (store.addQuickTask(quickInput), setQuickInput(''))} />
                   <button className="btn btn-primary" onClick={() => { if (quickInput) { store.addQuickTask(quickInput); setQuickInput(''); } }}><Plus size={16}/></button>
                 </div>
                 <div className="checklist-group">
-                  {store.quickTasks.map(t => (
+                  {(store.quickTasks || []).map(t => (
                     <div key={t.id} className="quick-task-row">
                       <label style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                         <input type="checkbox" checked={t.done} onChange={() => store.toggleQuickTask(t.id)} />
@@ -444,10 +369,10 @@ export default function App() {
               </div>
             </div>
 
-            {/* 16. Daily Rewards ΓÇö Self-Motivation */}
+            {/* Daily Rewards */}
             <div className="card">
               <div className="card-header">
-                <span className="card-icon">≡ƒÄü</span>
+                <span className="card-icon">🎁</span>
                 <h3 className="card-title">Daily Rewards</h3>
               </div>
               <p className="card-desc">Buka hadiah ini hanya jika seluruh checklist harian selesai 100%.</p>
@@ -456,59 +381,53 @@ export default function App() {
                 <button className="btn btn-primary" onClick={() => { if (rewardInput) { store.addReward(rewardInput); setRewardInput(''); } }}><Plus size={16}/></button>
               </div>
               <ul className="reward-list">
-                {store.rewards.map(item => (
+                {(store.rewards || []).map(item => (
                   <li key={item}>
-                    <span>≡ƒÄü {item}</span>
+                    <span>🎁 {item}</span>
                     <button className="btn-icon" onClick={() => store.deleteReward(item)}><Trash2 size={12}/></button>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* 18. Progress Tracker */}
+            {/* Progress Tracker */}
             <div className="card">
               <div className="card-header">
-                <span className="card-icon">≡ƒôê</span>
+                <span className="card-icon">📈</span>
                 <h3 className="card-title">Progress Tracker</h3>
               </div>
               <div className="flex-row" style={{ marginBottom: '12px' }}>
-                <input className="input-field" style={{ marginBottom: 0 }} placeholder="Habit baru..." value={habitName} onChange={e => {}} />
-                <button className="btn btn-primary"><Plus size={16}/></button>
+                <input className="input-field" style={{ marginBottom: 0 }} placeholder="Habit baru..." value={habitName} onChange={e => setHabitName(e.target.value)} onKeyDown={e => e.key === 'Enter' && habitName && (store.addTracker(habitName), setHabitName(''))} />
+                <button className="btn btn-primary" onClick={() => { if (habitName) { store.addTracker(habitName); setHabitName(''); } }}><Plus size={16}/></button>
               </div>
               <div className="trackers-list">
-                {store.trackers.map(tracker => {
-                  const getTrackerStats = (history) => {
+                {(store.trackers || []).map(tracker => {
+                  const getStats = (history) => {
                     let weekly = 0, monthly = 0, yearly = 0;
                     const today = new Date();
-                    history.forEach(dStr => {
+                    (history || []).forEach(dStr => {
                       const d = new Date(dStr);
                       if (d.getFullYear() === today.getFullYear()) yearly++;
                       if (d.getFullYear() === today.getFullYear() && d.getMonth() === today.getMonth()) monthly++;
-                      const diffTime = Math.abs(today - d);
-                      if (diffTime <= 7 * 24 * 60 * 60 * 1000) weekly++;
+                      if (Math.abs(today - d) <= 7 * 24 * 60 * 60 * 1000) weekly++;
                     });
                     return { weekly, monthly, yearly };
                   };
-
-                  const stats = getTrackerStats(tracker.history);
-                  const isDoneToday = tracker.history.includes(todayStr);
-
+                  const stats = getStats(tracker.history);
+                  const isDoneToday = (tracker.history || []).includes(todayStr);
                   return (
                     <div className="tracker-row-card" key={tracker.id}>
                       <div className="tracker-info">
                         <strong>{tracker.name}</strong>
-                        <span>Total: {tracker.history.length} kali</span>
+                        <span>Total: {(tracker.history || []).length} kali</span>
                       </div>
                       <div className="tracker-mini-stats">
                         <span>W: {stats.weekly}</span>
                         <span>M: {stats.monthly}</span>
                         <span>Y: {stats.yearly}</span>
                       </div>
-                      <button 
-                        className={`btn-check-in ${isDoneToday ? 'done' : ''}`}
-                        onClick={() => store.toggleTracker(tracker.id, todayStr)}
-                      >
-                        {isDoneToday ? 'Γ£ô' : '+'}
+                      <button className={`btn-check-in ${isDoneToday ? 'done' : ''}`} onClick={() => store.toggleTracker(tracker.id, todayStr)}>
+                        {isDoneToday ? '✓' : '+'}
                       </button>
                     </div>
                   );
@@ -516,10 +435,10 @@ export default function App() {
               </div>
             </div>
 
-            {/* 12. Mistake & Bad Habit Tracker */}
+            {/* Mistake Tracker */}
             <div className="card">
               <div className="card-header">
-                <span className="card-icon">ΓÜá∩╕Å</span>
+                <span className="card-icon">⚠️</span>
                 <h3 className="card-title">Mistake & Bad Habit Tracker</h3>
               </div>
               <div className="mistake-picker-row">
@@ -532,7 +451,7 @@ export default function App() {
                 <button className="btn btn-primary" onClick={() => { if (customMistake) { store.addMistake(customMistake); setCustomMistake(''); } }}><Plus size={16}/></button>
               </div>
               <div className="mistakes-log">
-                {store.mistakes.map(m => (
+                {(store.mistakes || []).map(m => (
                   <div key={m.id} className="mistake-log-item">
                     <span><strong>[{m.date}]</strong> {m.text}</span>
                     <button className="btn-icon" onClick={() => store.deleteMistake(m.id)}><Trash2 size={12}/></button>
@@ -541,10 +460,10 @@ export default function App() {
               </div>
             </div>
 
-            {/* 14. Distraction Blocklist */}
+            {/* Distraction Blocklist */}
             <div className="card">
               <div className="card-header">
-                <span className="card-icon">≡ƒ¢í∩╕Å</span>
+                <span className="card-icon">🛡️</span>
                 <h3 className="card-title">Distraction Blocklist</h3>
               </div>
               <div className="flex-row">
@@ -552,10 +471,10 @@ export default function App() {
                 <button className="btn btn-primary" onClick={() => { if (blockInput) { store.addBlocklistItem(blockInput); setBlockInput(''); } }}><Plus size={16}/></button>
               </div>
               <div className="blocklist-chips mt-4">
-                {store.blocklist.map(item => (
+                {(store.blocklist || []).map(item => (
                   <span className="block-chip" key={item}>
                     {item}
-                    <button className="btn-close-chip" onClick={() => store.deleteBlocklistItem(item)}>├ù</button>
+                    <button className="btn-close-chip" onClick={() => store.deleteBlocklistItem(item)}>×</button>
                   </span>
                 ))}
               </div>
@@ -564,16 +483,14 @@ export default function App() {
           </div>
         </div>
       ) : (
-        /* ==========================================
-           VIEW: DASHBOARD ANALITIK (STRATEGIC & REVIEW)
-           ========================================== */
+        /* ANALYTICS VIEW */
         <div className="analytics-view">
           
-          {/* 10. Proyeksi Income ΓÇö Tangga Income */}
+          {/* Tangga Income */}
           <div className="card">
-            <h3 className="card-title" style={{ marginBottom: '16px' }}>Tangga Income ΓÇö Proyeksi Realistis UMR ke Top 1%</h3>
+            <h3 className="card-title" style={{ marginBottom: '16px' }}>Tangga Income — Proyeksi Realistis UMR ke Top 1%</h3>
             <div className="ladder-list">
-              {store.ladder.map(item => (
+              {(store.ladder || []).map(item => (
                 <div 
                   key={item.id} 
                   className={`ladder-row-item ${store.currentLadderStage === item.id ? 'active' : ''}`}
@@ -593,7 +510,7 @@ export default function App() {
             </div>
           </div>
 
-          {/* 19. Review Mingguan */}
+          {/* Review Mingguan */}
           <div className="card">
             <h3 className="card-title">Review Mingguan</h3>
             <div className="review-form mt-4">
@@ -609,52 +526,37 @@ export default function App() {
                 <label className="form-label">03. Satu aksi konkret / penyesuaian untuk minggu depan?</label>
                 <textarea className="input-field" rows={2} value={revForm.q3} onChange={e => setRevForm({ ...revForm, q3: e.target.value })} />
               </div>
-              <button className="btn btn-primary" onClick={handleAddWeeklyReview}>Simpan Review Mingguan</button>
+              <button className="btn btn-primary" onClick={() => { if (revForm.q1 || revForm.q2 || revForm.q3) { store.addWeeklyReview(revForm); setRevForm({ q1: '', q2: '', q3: '' }); } }}>Simpan Review Mingguan</button>
             </div>
 
             <div className="reviews-history mt-4">
-              {store.weeklyReviews.map(review => (
+              {(store.weeklyReviews || []).map(review => (
                 <div key={review.id} className="history-review-card">
                   <button className="btn-delete-review" onClick={() => store.deleteWeeklyReview(review.id)}><Trash2 size={14}/></button>
                   <div className="review-flex-cols">
-                    <div>
-                      <div className="num-circle">01</div>
-                      <strong>Penyelesaian</strong>
-                      <p>{review.q1}</p>
-                    </div>
-                    <div>
-                      <div className="num-circle">02</div>
-                      <strong>Hambatan</strong>
-                      <p>{review.q2}</p>
-                    </div>
-                    <div>
-                      <div className="num-circle">03</div>
-                      <strong>Aksi Konkret</strong>
-                      <p>{review.q3}</p>
-                    </div>
+                    <div><div className="num-circle">01</div><strong>Penyelesaian</strong><p>{review.q1}</p></div>
+                    <div><div className="num-circle">02</div><strong>Hambatan</strong><p>{review.q2}</p></div>
+                    <div><div className="num-circle">03</div><strong>Aksi Konkret</strong><p>{review.q3}</p></div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* 20. Reframe Pikiran */}
+          {/* Reframe Pikiran */}
           <div className="card">
             <h3 className="card-title" style={{ marginBottom: '16px' }}>Reframe Pikiran (Kognitif)</h3>
-            <div className="reframe-form">
-              <div className="flex-row">
-                <input className="input-field" style={{ marginBottom: 0 }} placeholder="Pikiran lama..." value={refOld} onChange={e => setRefOld(e.target.value)} />
-                <span style={{ color: 'var(--muted2)' }}>ΓåÆ</span>
-                <input className="input-field" style={{ marginBottom: 0 }} placeholder="Reframe baru..." value={refNew} onChange={e => setRefNew(e.target.value)} />
-                <button className="btn btn-primary" onClick={handleAddReframe}>Simpan</button>
-              </div>
+            <div className="flex-row">
+              <input className="input-field" style={{ marginBottom: 0 }} placeholder="Pikiran lama..." value={refOld} onChange={e => setRefOld(e.target.value)} />
+              <span style={{ color: 'var(--text-muted)' }}>→</span>
+              <input className="input-field" style={{ marginBottom: 0 }} placeholder="Reframe baru..." value={refNew} onChange={e => setRefNew(e.target.value)} />
+              <button className="btn btn-primary" onClick={() => { if (refOld && refNew) { store.addReframe({ old: refOld, new: refNew }); setRefOld(''); setRefNew(''); } }}>Simpan</button>
             </div>
-
             <div className="reframes-list mt-4">
-              {store.reframes.map(item => (
+              {(store.reframes || []).map(item => (
                 <div className="reframe-row-card" key={item.id}>
                   <div className="reframe-old-text">{item.old}</div>
-                  <div className="reframe-arrow-icon">ΓåÆ</div>
+                  <div className="reframe-arrow-icon">→</div>
                   <div className="reframe-new-text">{item.new}</div>
                   <button className="btn-icon" onClick={() => store.deleteReframe(item.id)}><Trash2 size={12}/></button>
                 </div>
@@ -662,31 +564,40 @@ export default function App() {
             </div>
           </div>
 
-          {/* 8. Research base */}
-          <ResearchBase />
+          {/* Research Base */}
+          <div className="card">
+            <h3 className="card-title" style={{ marginBottom: '16px' }}>🔬 Landasan Riset yang Valid (Peer-reviewed)</h3>
+            <div className="research-grid">
+              <div className="r-card c1">
+                <div className="r-label">Gollwitzer, 1999 · Psych Review</div>
+                <div className="r-title">Implementation Intentions</div>
+                <div className="r-body">Format "Jika X → maka Y" meningkatkan follow-through 2–3x dibanding goal biasa. Bekerja di level non-conscious habit loop.</div>
+              </div>
+              <div className="r-card c2">
+                <div className="r-label">Locke & Latham, 2002</div>
+                <div className="r-title">Goal-Setting Theory</div>
+                <div className="r-body">Goal yang spesifik + menantang + ada feedback menghasilkan performa 16–25% lebih tinggi secara konsisten.</div>
+              </div>
+              <div className="r-card c3">
+                <div className="r-label">Beaty et al., 2016 · PNAS</div>
+                <div className="r-title">DMN & Kreativitas</div>
+                <div className="r-body">Otak memproses solusi kreatif saat tidak aktif, TAPI hanya jika masalah sudah di-load dulu via kerja keras sadar.</div>
+              </div>
+              <div className="r-card c4">
+                <div className="r-label">Graybiel, 2008 · Neurosci</div>
+                <div className="r-title">Habit Loop & Basal Ganglia</div>
+                <div className="r-body">Rutinitas yang diulang 60–90 hari menjadi otomatis di basal ganglia — membebaskan otak sadar untuk kerja kreatif.</div>
+              </div>
+            </div>
+          </div>
 
         </div>
       )}
     </div>
   );
-
-  function handleAddWeeklyReview() {
-    if (revForm.q1 || revForm.q2 || revForm.q3) {
-      store.addWeeklyReview(revForm);
-      setRevForm({ q1: '', q2: '', q3: '' });
-    }
-  }
-
-  function handleAddReframe() {
-    if (refOld && refNew) {
-      store.addReframe({ old: refOld, new: refNew });
-      setRefOld('');
-      setRefNew('');
-    }
-  }
 }
 
-// Deep Work Console component
+// Deep Work Console
 function DeepWorkConsole({ store }) {
   const [timeLeft, setTimeLeft] = useState(3600);
   const [isRunning, setIsRunning] = useState(false);
@@ -707,48 +618,36 @@ function DeepWorkConsole({ store }) {
 
   const toggle = () => setIsRunning(!isRunning);
   const reset = () => { setIsRunning(false); setTimeLeft(3600); };
-
   const formatTime = (secs) => {
     const mins = Math.floor(secs / 60);
     const s = secs % 60;
     return `${mins.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
-
   const handleManualLog = () => {
     const mins = parseInt(logVal, 10);
-    if (!isNaN(mins) && mins > 0) {
-      store.logDeepWork(mins);
-      setLogVal('');
-      alert(`Manual Log: ${mins} menit ditambahkan.`);
-    }
+    if (!isNaN(mins) && mins > 0) { store.logDeepWork(mins); setLogVal(''); alert(`Manual Log: ${mins} menit ditambahkan.`); }
   };
 
-  // Calculate deep work stats
+  const deepWorkLogs = store.deepWorkLogs || [];
   const todayStr = new Date().toISOString().split('T')[0];
-  const todayLog = store.deepWorkLogs.find(l => l.date === todayStr);
+  const todayLog = deepWorkLogs.find(l => l.date === todayStr);
   const deepWorkToday = todayLog ? todayLog.minutes : 0;
-  
-  const totalMinutes = store.deepWorkLogs.reduce((acc, curr) => acc + curr.minutes, 0);
-  const totalSessions = store.deepWorkLogs.length;
+  const totalMinutes = deepWorkLogs.reduce((acc, curr) => acc + curr.minutes, 0);
+  const totalSessions = deepWorkLogs.length;
   const averageSession = totalSessions > 0 ? (totalMinutes / totalSessions).toFixed(0) : 0;
 
-  // Last 7 days chart array
-  const getLast7DaysData = () => {
+  const getLast7Days = () => {
     const data = [];
     for (let i = 6; i >= 0; i--) {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
+      const d = new Date(); d.setDate(d.getDate() - i);
       const dStr = d.toISOString().split('T')[0];
-      const log = store.deepWorkLogs.find(l => l.date === dStr);
-      data.push({
-        label: d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }),
-        value: log ? log.minutes : 0
-      });
+      const log = deepWorkLogs.find(l => l.date === dStr);
+      data.push({ label: d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }), value: log ? log.minutes : 0 });
     }
     return data;
   };
-  const last7Days = getLast7DaysData();
-  const maxMins = Math.max(...last7Days.map(d => d.value), 60); // min scale to 60m
+  const last7Days = getLast7Days();
+  const maxMins = Math.max(...last7Days.map(d => d.value), 60);
 
   return (
     <div className="deep-work-console">
@@ -776,7 +675,7 @@ function DeepWorkConsole({ store }) {
       </div>
 
       <div className="deep-work-timer-section">
-        <span className="timer-title">ΓÅ▒∩╕Å Deep Work Session Timer</span>
+        <span className="timer-title">⏱️ Deep Work Session Timer</span>
         <div className="timer-display-cream">{formatTime(timeLeft)}</div>
         <div className="flex-row" style={{ justifyContent: 'center', marginTop: '10px' }}>
           <button className={`btn ${isRunning ? 'btn-danger' : 'btn-primary'}`} onClick={toggle}>{isRunning ? 'Pause' : 'Start Session'}</button>
@@ -788,9 +687,8 @@ function DeepWorkConsole({ store }) {
         </div>
       </div>
 
-      {/* 7 Days Trend Chart */}
       <div className="trend-chart-box">
-        <span className="chart-title">≡ƒôê Tren Deep Work (7 Hari Terakhir)</span>
+        <span className="chart-title">📈 Tren Deep Work (7 Hari Terakhir)</span>
         <div className="chart-bars-wrap">
           {last7Days.map((day, idx) => {
             const pct = (day.value / maxMins) * 100;
@@ -803,37 +701,6 @@ function DeepWorkConsole({ store }) {
               </div>
             );
           })}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ResearchBase
-function ResearchBase() {
-  return (
-    <div className="card">
-      <h3 className="card-title" style={{ marginBottom: '16px' }}>≡ƒö¼ Landasan Riset yang Valid (Peer-reviewed)</h3>
-      <div className="research-grid">
-        <div className="r-card c1">
-          <div className="r-label">Gollwitzer, 1999 ┬╖ Psych Review</div>
-          <div className="r-title">Implementation Intentions</div>
-          <div className="r-body">Format "Jika X ΓåÆ maka Y" meningkatkan follow-through 2ΓÇô3x dibanding goal biasa. Bekerja di level non-conscious habit loop.</div>
-        </div>
-        <div className="r-card c2">
-          <div className="r-label">Locke & Latham, 2002</div>
-          <div className="r-title">Goal-Setting Theory</div>
-          <div className="r-body">Goal yang spesifik + menantang + ada feedback menghasilkan performa 16ΓÇô25% lebih tinggi secara konsisten.</div>
-        </div>
-        <div className="r-card c3">
-          <div className="r-label">Beaty et al., 2016 ┬╖ PNAS</div>
-          <div className="r-title">DMN & Kreativitas</div>
-          <div className="r-body">Otak memproses solusi kreatif saat tidak aktif, TAPI hanya jika masalah sudah di-load dulu via kerja keras sadar.</div>
-        </div>
-        <div className="r-card c4">
-          <div className="r-label">Graybiel, 2008 ┬╖ Neurosci</div>
-          <div className="r-title">Habit Loop & Basal Ganglia</div>
-          <div className="r-body">Rutinitas yang diulang 60ΓÇô90 hari menjadi otomatis di basal ganglia ΓÇö membebaskan otak sadar untuk kerja kreatif.</div>
         </div>
       </div>
     </div>
