@@ -16,6 +16,7 @@ export default function App() {
   const store = useStore();
   const [activeView, setActiveView] = useState('workspace');
   const [newBlock, setNewBlock] = useState({ char: '🌅', time: '', name: '', tasks: '' });
+  const [loginEmail, setLoginEmail] = useState('');
   const [showAddBlock, setShowAddBlock] = useState(false);
   const [quickInput, setQuickInput] = useState('');
   const [matrixForm, setMatrixForm] = useState({ q1: '', q2: '', q3: '', q4: '' });
@@ -40,6 +41,23 @@ export default function App() {
     }
   };
 
+  const handleLogin = () => {
+    if (!loginEmail) return alert('Silakan masukkan email Anda!');
+    const normalizedEmail = loginEmail.trim().toLowerCase();
+    store.setCurrentUser(normalizedEmail);
+    setTimeout(() => {
+      useStore.persist.rehydrate();
+    }, 50);
+  };
+
+  const handleLogout = () => {
+    store.setCurrentUser('');
+    setLoginEmail('');
+    setTimeout(() => {
+      useStore.persist.rehydrate();
+    }, 50);
+  };
+
   const handleAddDailyBlock = () => {
     if (newBlock.name) {
       store.addDailyBlock({ ...newBlock, tasks: newBlock.tasks.split('\n').filter(Boolean) });
@@ -61,23 +79,49 @@ export default function App() {
 
   const coveyMatrix = store.coveyMatrix || { q1: [], q2: [], q3: [], q4: [] };
 
+  if (!store.currentUser) {
+    return (
+      <div className="login-container">
+        <div className="login-card">
+          <div className="login-header">
+            <span className="eyebrow">SISTEM HARIAN PERSONAL</span>
+            <h1 className="login-title">consist<span className="accent">.</span></h1>
+            <p className="login-subtitle">Dikalibrasi untuk pencapaian UMR ke Top 1% Nasional</p>
+          </div>
+          
+          <div className="login-form">
+            <div className="form-group">
+              <label className="form-label" style={{ textAlign: 'left' }}>Alamat Email Anda</label>
+              <input 
+                type="email" 
+                className="input-field" 
+                placeholder="nama@email.com" 
+                value={loginEmail} 
+                onChange={e => setLoginEmail(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleLogin()}
+              />
+            </div>
+            <button className="btn btn-primary btn-login" onClick={handleLogin}>
+              Masuk ke Workspace
+            </button>
+          </div>
+          
+          <div className="login-footer">
+            Setiap email memiliki workspace dan data yang terpisah secara aman di browser ini.
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="app-container">
       {/* Top Header Controls */}
       <div className="header-meta">
-        <span className="user-email">👤 {store.currentUser || 'Guest'}</span>
+        <span className="user-email">👤 {store.currentUser}</span>
         <div className="header-buttons">
           <button className="btn-meta" onClick={handleResetDefaults}>🔄 Masukkan Default</button>
-          <button className="btn-meta" onClick={() => {
-            if (store.currentUser) {
-              store.setCurrentUser('');
-            } else {
-              const email = window.prompt('Masukkan email Anda:', 'ngawurrpp0001@gmail.com');
-              if (email) store.setCurrentUser(email);
-            }
-          }}>
-            {store.currentUser ? '🚪 Keluar' : '🔑 Masuk'}
-          </button>
+          <button className="btn-meta" onClick={handleLogout}>🚪 Keluar</button>
         </div>
       </div>
 

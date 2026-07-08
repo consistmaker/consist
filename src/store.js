@@ -183,8 +183,11 @@ export const useStore = create(
   persist(
     (set) => ({
       // User Info
-      currentUser: 'ngawurrpp0001@gmail.com',
-      setCurrentUser: (email) => set({ currentUser: email }),
+      currentUser: '',
+      setCurrentUser: (email) => {
+        localStorage.setItem('active_user', email);
+        set({ currentUser: email });
+      },
 
       // Notepad
       notepad: initialNotepad,
@@ -359,6 +362,29 @@ export const useStore = create(
     }),
     {
       name: 'life-os-cream-storage-v4',
+      storage: {
+        getItem: (name) => {
+          const activeUser = localStorage.getItem('active_user') || '';
+          const userKey = activeUser ? `life-os-user-${activeUser}` : name;
+          const dataStr = localStorage.getItem(userKey);
+          if (!dataStr) return null;
+          try {
+            return JSON.parse(dataStr);
+          } catch (e) {
+            return null;
+          }
+        },
+        setItem: (name, value) => {
+          const activeUser = localStorage.getItem('active_user') || '';
+          const userKey = activeUser ? `life-os-user-${activeUser}` : name;
+          localStorage.setItem(userKey, JSON.stringify(value));
+        },
+        removeItem: (name) => {
+          const activeUser = localStorage.getItem('active_user') || '';
+          const userKey = activeUser ? `life-os-user-${activeUser}` : name;
+          localStorage.removeItem(userKey);
+        }
+      }
     }
   )
 );

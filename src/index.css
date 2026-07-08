@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
 
 @font-face {
   font-family: 'Clash Display';
@@ -1167,4 +1167,71 @@ body {
   .stats-row-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ─── LOGIN SCREEN STYLING ─── */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--bg);
+  padding: 20px;
+}
+
+.login-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  text-align: center;
+  animation: fadeUp 0.5s ease both;
+}
+
+.login-header {
+  margin-bottom: 32px;
+}
+
+.login-header .eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-muted2);
+  text-transform: uppercase;
+}
+
+.login-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-top: 8px;
+}
+
+.login-title .accent {
+  color: var(--brand-orange);
+}
+
+.login-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.btn-login {
+  width: 100%;
+  justify-content: center;
+  padding: 12px;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.login-footer {
+  font-size: 11px;
+  color: var(--text-muted2);
+  margin-top: 24px;
+  line-height: 1.5;
 }
