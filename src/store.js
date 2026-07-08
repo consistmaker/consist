@@ -1,4 +1,4 @@
-﻿import { create } from 'zustand';
+import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 // Generate default roadmap for 12 months, 4 weeks each, with structured tasks
@@ -354,7 +354,7 @@ export const useStore = create(
       })
     }),
     {
-      name: 'life-os-cream-storage-v2',
+      name: 'life-os-cream-storage-v3',
     }
   )
 );
