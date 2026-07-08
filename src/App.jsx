@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from './store';
+import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
+import { auth, googleProvider } from './firebase';
+
 
 // Inline Icons
 const Plus = ({ size = 18 }) => (
@@ -16,7 +19,6 @@ export default function App() {
   const store = useStore();
   const [activeView, setActiveView] = useState('workspace');
   const [newBlock, setNewBlock] = useState({ char: '🌅', time: '', name: '', tasks: '' });
-  const [loginEmail, setLoginEmail] = useState('');
   const [showAddBlock, setShowAddBlock] = useState(false);
   const [quickInput, setQuickInput] = useState('');
   const [matrixForm, setMatrixForm] = useState({ q1: '', q2: '', q3: '', q4: '' });
@@ -34,6 +36,24 @@ export default function App() {
 
   const todayStr = new Date().toISOString().split('T')[0];
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user && user.email) {
+        const normalizedEmail = user.email.trim().toLowerCase();
+        store.setCurrentUser(normalizedEmail);
+        setTimeout(() => {
+          useStore.persist.rehydrate();
+        }, 50);
+      } else {
+        store.setCurrentUser('');
+        setTimeout(() => {
+          useStore.persist.rehydrate();
+        }, 50);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
   const handleResetDefaults = () => {
     if (window.confirm('Apakah Anda yakin ingin memuat ulang semua data ke setelan default? Tindakan ini akan menimpa data Anda saat ini.')) {
       store.resetAllDefaults();
@@ -41,21 +61,22 @@ export default function App() {
     }
   };
 
-  const handleLogin = () => {
-    if (!loginEmail) return alert('Silakan masukkan email Anda!');
-    const normalizedEmail = loginEmail.trim().toLowerCase();
-    store.setCurrentUser(normalizedEmail);
-    setTimeout(() => {
-      useStore.persist.rehydrate();
-    }, 50);
+  const handleGoogleLogin = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      console.error(error);
+      alert('Gagal login dengan Google: ' + error.message);
+    }
   };
 
-  const handleLogout = () => {
-    store.setCurrentUser('');
-    setLoginEmail('');
-    setTimeout(() => {
-      useStore.persist.rehydrate();
-    }, 50);
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error(error);
+      alert('Gagal logout: ' + error.message);
+    }
   };
 
   const handleAddDailyBlock = () => {
@@ -90,24 +111,13 @@ export default function App() {
           </div>
           
           <div className="login-form">
-            <div className="form-group">
-              <label className="form-label" style={{ textAlign: 'left' }}>Alamat Email Anda</label>
-              <input 
-                type="email" 
-                className="input-field" 
-                placeholder="nama@email.com" 
-                value={loginEmail} 
-                onChange={e => setLoginEmail(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && handleLogin()}
-              />
-            </div>
-            <button className="btn btn-primary btn-login" onClick={handleLogin}>
-              Masuk ke Workspace
+            <button className="btn btn-primary btn-login" onClick={handleGoogleLogin}>
+              🔑 Masuk dengan Google
             </button>
           </div>
           
           <div className="login-footer">
-            Setiap email memiliki workspace dan data yang terpisah secara aman di browser ini.
+            Setelah masuk, data harian Anda akan dimuat secara terpisah dan tersimpan aman di browser ini.
           </div>
         </div>
       </div>
