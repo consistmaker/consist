@@ -15,8 +15,6 @@ const Edit2 = ({ size = 14 }) => (
 export default function App() {
   const store = useStore();
   const [activeView, setActiveView] = useState('workspace');
-  const [currentUser, setCurrentUser] = useState('ngawurrpp0001@gmail.com');
-
   const [newBlock, setNewBlock] = useState({ char: '🌅', time: '', name: '', tasks: '' });
   const [showAddBlock, setShowAddBlock] = useState(false);
   const [quickInput, setQuickInput] = useState('');
@@ -67,11 +65,18 @@ export default function App() {
     <div className="app-container">
       {/* Top Header Controls */}
       <div className="header-meta">
-        <span className="user-email">👤 {currentUser}</span>
+        <span className="user-email">👤 {store.currentUser || 'Guest'}</span>
         <div className="header-buttons">
           <button className="btn-meta" onClick={handleResetDefaults}>🔄 Masukkan Default</button>
-          <button className="btn-meta" onClick={() => setCurrentUser(currentUser ? '' : 'ngawurrpp0001@gmail.com')}>
-            {currentUser ? '🚪 Keluar' : '🔑 Masuk'}
+          <button className="btn-meta" onClick={() => {
+            if (store.currentUser) {
+              store.setCurrentUser('');
+            } else {
+              const email = window.prompt('Masukkan email Anda:', 'ngawurrpp0001@gmail.com');
+              if (email) store.setCurrentUser(email);
+            }
+          }}>
+            {store.currentUser ? '🚪 Keluar' : '🔑 Masuk'}
           </button>
         </div>
       </div>

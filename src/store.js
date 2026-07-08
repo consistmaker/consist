@@ -182,6 +182,10 @@ const initialAuditTasks = [
 export const useStore = create(
   persist(
     (set) => ({
+      // User Info
+      currentUser: 'ngawurrpp0001@gmail.com',
+      setCurrentUser: (email) => set({ currentUser: email }),
+
       // Notepad
       notepad: initialNotepad,
       setNotepad: (text) => set({ notepad: text }),
