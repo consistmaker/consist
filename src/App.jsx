@@ -30,6 +30,9 @@ export default function App() {
   // Intentions inputs
   const [intentForm, setIntentForm] = useState({ when: 'PAGI', trigger: '', response: '', note: '' });
 
+  // Habit Tracker inputs
+  const [habitName, setHabitName] = useState('');
+
   // Mistake inputs
   const [customMistake, setCustomMistake] = useState('');
 
@@ -80,11 +83,26 @@ export default function App() {
     setEditingText(currentText);
   };
 
+  // Safe checks for arrays and objects from store
+  const coveyMatrix = store.coveyMatrix || { q1: [], q2: [], q3: [], q4: [] };
+  const dailyBlocks = store.dailyBlocks || [];
+  const framerRoadmap = store.framerRoadmap || {};
+  const auditTasks = store.auditTasks || [];
+  const quickTasks = store.quickTasks || [];
+  const rewards = store.rewards || [];
+  const trackers = store.trackers || [];
+  const mistakes = store.mistakes || [];
+  const blocklist = store.blocklist || [];
+  const intentions = store.intentions || [];
+  const ladder = store.ladder || [];
+  const weeklyReviews = store.weeklyReviews || [];
+  const reframes = store.reframes || [];
+
   return (
     <div className="app-container">
       {/* Top Header Controls */}
       <div className="header-meta">
-        <span className="user-email">👤 {currentUser}</span>
+        {currentUser && <span className="user-email">👤 {currentUser}</span>}
         <div className="header-buttons">
           <button className="btn-meta" onClick={handleResetDefaults}>🔄 Masukkan Default</button>
           <button className="btn-meta" onClick={() => setCurrentUser(currentUser ? '' : 'ngawurrpp0001@gmail.com')}>
@@ -138,7 +156,7 @@ export default function App() {
               </div>
               <textarea 
                 className="notepad-textarea" 
-                value={store.notepad} 
+                value={store.notepad || ''} 
                 onChange={e => store.setNotepad(e.target.value)}
                 placeholder="Tulis catatan penting Anda di sini..."
               />
@@ -192,7 +210,7 @@ export default function App() {
 
               {/* Display blocks */}
               <div className="daily-blocks-list">
-                {store.dailyBlocks.map(block => (
+                {dailyBlocks.map(block => (
                   <div className="daily-block-card" key={block.id}>
                     <div className="block-meta">
                       <span className="block-icon">{block.char}</span>
@@ -203,7 +221,7 @@ export default function App() {
                     </div>
                     <div className="block-tasks">
                       <ul>
-                        {block.tasks.map((t, idx) => <li key={idx}>• {t}</li>)}
+                        {(block.tasks || []).map((t, idx) => <li key={idx}>• {t}</li>)}
                       </ul>
                     </div>
                     <button className="btn-delete-block" onClick={() => store.deleteDailyBlock(block.id)}><Trash2 size={14}/></button>
@@ -234,7 +252,7 @@ export default function App() {
 
                 <div className="roadmap-days-list">
                   <span className="roadmap-subtitle">📅 Alokasi Tugas Blok Framer (Bulan {selectedMonth} Minggu {selectedWeek}):</span>
-                  {Object.entries(store.framerRoadmap[selectedMonth]?.[selectedWeek] || {}).map(([day, task]) => (
+                  {Object.entries(framerRoadmap[selectedMonth]?.[selectedWeek] || {}).map(([day, task]) => (
                     <div key={day} className="roadmap-day-row">
                       <span className="day-name">{day}</span>
                       <div className="day-task-content">
@@ -310,15 +328,15 @@ export default function App() {
                 <div className="covey-quadrant q1">
                   <span className="q-label">Q1 · Lakukan Sekarang (Penting + Mendesak)</span>
                   <div className="flex-row">
-                    <input className="input-field" style={{ marginBottom: 0, padding: '4px 8px' }} placeholder="Tambah item..." value={matrixForm.q1} onChange={e => setMatrixForm({ ...matrixForm, q1: e.target.value })} onKeyDown={e => e.key === 'Enter' && (store.updateCovey('q1', [...store.coveyMatrix.q1, matrixForm.q1]), setMatrixForm({ ...matrixForm, q1: '' }))} />
-                    <button className="btn btn-sm btn-primary" onClick={() => { if (matrixForm.q1) { store.updateCovey('q1', [...store.coveyMatrix.q1, matrixForm.q1]); setMatrixForm({ ...matrixForm, q1: '' }); } }}><Plus size={14}/></button>
+                    <input className="input-field" style={{ marginBottom: 0, padding: '4px 8px' }} placeholder="Tambah item..." value={matrixForm.q1} onChange={e => setMatrixForm({ ...matrixForm, q1: e.target.value })} onKeyDown={e => e.key === 'Enter' && (store.updateCovey('q1', [...(coveyMatrix.q1 || []), matrixForm.q1]), setMatrixForm({ ...matrixForm, q1: '' }))} />
+                    <button className="btn btn-sm btn-primary" onClick={() => { if (matrixForm.q1) { store.updateCovey('q1', [...(coveyMatrix.q1 || []), matrixForm.q1]); setMatrixForm({ ...matrixForm, q1: '' }); } }}><Plus size={14}/></button>
                   </div>
                   <ul>
-                    {store.coveyMatrix.q1.map((item, i) => (
+                    {(coveyMatrix.q1 || []).map((item, i) => (
                       <li key={i}>
                         <span>{item}</span>
                         <button className="btn-icon" onClick={() => {
-                          const updated = [...store.coveyMatrix.q1]; updated.splice(i, 1); store.updateCovey('q1', updated);
+                          const updated = [...coveyMatrix.q1]; updated.splice(i, 1); store.updateCovey('q1', updated);
                         }}><Trash2 size={12}/></button>
                       </li>
                     ))}
@@ -329,15 +347,15 @@ export default function App() {
                 <div className="covey-quadrant q2">
                   <span className="q-label">Q2 · Jadwalkan (Penting + Tidak Mendesak)</span>
                   <div className="flex-row">
-                    <input className="input-field" style={{ marginBottom: 0, padding: '4px 8px' }} placeholder="Tambah item..." value={matrixForm.q2} onChange={e => setMatrixForm({ ...matrixForm, q2: e.target.value })} onKeyDown={e => e.key === 'Enter' && (store.updateCovey('q2', [...store.coveyMatrix.q2, matrixForm.q2]), setMatrixForm({ ...matrixForm, q2: '' }))} />
-                    <button className="btn btn-sm btn-primary" onClick={() => { if (matrixForm.q2) { store.updateCovey('q2', [...store.coveyMatrix.q2, matrixForm.q2]); setMatrixForm({ ...matrixForm, q2: '' }); } }}><Plus size={14}/></button>
+                    <input className="input-field" style={{ marginBottom: 0, padding: '4px 8px' }} placeholder="Tambah item..." value={matrixForm.q2} onChange={e => setMatrixForm({ ...matrixForm, q2: e.target.value })} onKeyDown={e => e.key === 'Enter' && (store.updateCovey('q2', [...(coveyMatrix.q2 || []), matrixForm.q2]), setMatrixForm({ ...matrixForm, q2: '' }))} />
+                    <button className="btn btn-sm btn-primary" onClick={() => { if (matrixForm.q2) { store.updateCovey('q2', [...(coveyMatrix.q2 || []), matrixForm.q2]); setMatrixForm({ ...matrixForm, q2: '' }); } }}><Plus size={14}/></button>
                   </div>
                   <ul>
-                    {store.coveyMatrix.q2.map((item, i) => (
+                    {(coveyMatrix.q2 || []).map((item, i) => (
                       <li key={i}>
                         <span>{item}</span>
                         <button className="btn-icon" onClick={() => {
-                          const updated = [...store.coveyMatrix.q2]; updated.splice(i, 1); store.updateCovey('q2', updated);
+                          const updated = [...coveyMatrix.q2]; updated.splice(i, 1); store.updateCovey('q2', updated);
                         }}><Trash2 size={12}/></button>
                       </li>
                     ))}
@@ -348,15 +366,15 @@ export default function App() {
                 <div className="covey-quadrant q3">
                   <span className="q-label">Q3 · Batasi (Tidak Penting + Mendesak)</span>
                   <div className="flex-row">
-                    <input className="input-field" style={{ marginBottom: 0, padding: '4px 8px' }} placeholder="Tambah item..." value={matrixForm.q3} onChange={e => setMatrixForm({ ...matrixForm, q3: e.target.value })} onKeyDown={e => e.key === 'Enter' && (store.updateCovey('q3', [...store.coveyMatrix.q3, matrixForm.q3]), setMatrixForm({ ...matrixForm, q3: '' }))} />
-                    <button className="btn btn-sm btn-primary" onClick={() => { if (matrixForm.q3) { store.updateCovey('q3', [...store.coveyMatrix.q3, matrixForm.q3]); setMatrixForm({ ...matrixForm, q3: '' }); } }}><Plus size={14}/></button>
+                    <input className="input-field" style={{ marginBottom: 0, padding: '4px 8px' }} placeholder="Tambah item..." value={matrixForm.q3} onChange={e => setMatrixForm({ ...matrixForm, q3: e.target.value })} onKeyDown={e => e.key === 'Enter' && (store.updateCovey('q3', [...(coveyMatrix.q3 || []), matrixForm.q3]), setMatrixForm({ ...matrixForm, q3: '' }))} />
+                    <button className="btn btn-sm btn-primary" onClick={() => { if (matrixForm.q3) { store.updateCovey('q3', [...(coveyMatrix.q3 || []), matrixForm.q3]); setMatrixForm({ ...matrixForm, q3: '' }); } }}><Plus size={14}/></button>
                   </div>
                   <ul>
-                    {store.coveyMatrix.q3.map((item, i) => (
+                    {(coveyMatrix.q3 || []).map((item, i) => (
                       <li key={i}>
                         <span>{item}</span>
                         <button className="btn-icon" onClick={() => {
-                          const updated = [...store.coveyMatrix.q3]; updated.splice(i, 1); store.updateCovey('q3', updated);
+                          const updated = [...coveyMatrix.q3]; updated.splice(i, 1); store.updateCovey('q3', updated);
                         }}><Trash2 size={12}/></button>
                       </li>
                     ))}
@@ -367,15 +385,15 @@ export default function App() {
                 <div className="covey-quadrant q4">
                   <span className="q-label">Q4 · Eliminasi (Tidak Penting + Tidak Mendesak)</span>
                   <div className="flex-row">
-                    <input className="input-field" style={{ marginBottom: 0, padding: '4px 8px' }} placeholder="Tambah item..." value={matrixForm.q4} onChange={e => setMatrixForm({ ...matrixForm, q4: e.target.value })} onKeyDown={e => e.key === 'Enter' && (store.updateCovey('q4', [...store.coveyMatrix.q4, matrixForm.q4]), setMatrixForm({ ...matrixForm, q4: '' }))} />
-                    <button className="btn btn-sm btn-primary" onClick={() => { if (matrixForm.q4) { store.updateCovey('q4', [...store.coveyMatrix.q4, matrixForm.q4]); setMatrixForm({ ...matrixForm, q4: '' }); } }}><Plus size={14}/></button>
+                    <input className="input-field" style={{ marginBottom: 0, padding: '4px 8px' }} placeholder="Tambah item..." value={matrixForm.q4} onChange={e => setMatrixForm({ ...matrixForm, q4: e.target.value })} onKeyDown={e => e.key === 'Enter' && (store.updateCovey('q4', [...(coveyMatrix.q4 || []), matrixForm.q4]), setMatrixForm({ ...matrixForm, q4: '' }))} />
+                    <button className="btn btn-sm btn-primary" onClick={() => { if (matrixForm.q4) { store.updateCovey('q4', [...(coveyMatrix.q4 || []), matrixForm.q4]); setMatrixForm({ ...matrixForm, q4: '' }); } }}><Plus size={14}/></button>
                   </div>
                   <ul>
-                    {store.coveyMatrix.q4.map((item, i) => (
+                    {(coveyMatrix.q4 || []).map((item, i) => (
                       <li key={i}>
                         <span>{item}</span>
                         <button className="btn-icon" onClick={() => {
-                          const updated = [...store.coveyMatrix.q4]; updated.splice(i, 1); store.updateCovey('q4', updated);
+                          const updated = [...coveyMatrix.q4]; updated.splice(i, 1); store.updateCovey('q4', updated);
                         }}><Trash2 size={12}/></button>
                       </li>
                     ))}
@@ -390,6 +408,35 @@ export default function App() {
               <p className="stress-desc">
                 Jika merasa stress berlebih/tidak bisa produktif, batasi kerja YT/CapCut ke batas minimal (5 menit cek analitik), cari udara segar, dan hubungi bantuan profesional jika stress menetap &gt; 30 hari.
               </p>
+            </div>
+
+            {/* 9. Implementation Intentions */}
+            <div className="card">
+              <div className="card-header">
+                <span className="card-icon">⚡</span>
+                <h3 className="card-title">Implementation Intentions Harian</h3>
+              </div>
+              <div className="flex-row" style={{ background: 'var(--input-bg)', padding: '12px', borderRadius: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
+                <select className="input-field" style={{ width: '120px', marginBottom: 0 }} value={intentForm.when} onChange={e => setIntentForm({...intentForm, when: e.target.value})}>
+                  <option>PAGI</option><option>SIANG</option><option>SORE</option><option>MALAM</option><option>BURNOUT</option>
+                </select>
+                <input className="input-field" style={{ flex: '1', minWidth: '150px', marginBottom: 0 }} placeholder="Jika [TRIGGER]..." value={intentForm.trigger} onChange={e => setIntentForm({...intentForm, trigger: e.target.value})} />
+                <input className="input-field" style={{ flex: '1', minWidth: '150px', marginBottom: 0 }} placeholder="Maka [AKSI]..." value={intentForm.response} onChange={e => setIntentForm({...intentForm, response: e.target.value})} />
+                <button className="btn btn-primary" onClick={() => { if (intentForm.trigger && intentForm.response) { store.addIntention(intentForm); setIntentForm({ when: 'PAGI', trigger: '', response: '', note: '' }); } }}><Plus size={14} /> Tambah</button>
+              </div>
+
+              <div className="ii-builder">
+                {intentions.map(item => (
+                  <div className="ii-row" key={item.id}>
+                    <div className="ii-when">{item.when}</div>
+                    <div className="ii-action">
+                      Jika <span className="trigger">{item.trigger}</span>, maka aku akan <span className="response">{item.response}</span>
+                      {item.note && <div className="ii-note">{item.note}</div>}
+                    </div>
+                    <button className="btn btn-danger" style={{ padding: '6px' }} onClick={() => store.deleteIntention(item.id)}><Trash2 size={14}/></button>
+                  </div>
+                ))}
+              </div>
             </div>
 
           </div>
@@ -413,7 +460,7 @@ export default function App() {
                 <h3 className="card-title">Tugas Utama (Checklist Harian)</h3>
               </div>
               <div className="checklist-group">
-                {store.auditTasks.map(task => (
+                {auditTasks.map(task => (
                   <label key={task.id} className="habit-check-row">
                     <input type="checkbox" checked={task.done} onChange={() => store.toggleAuditTask(task.id)} />
                     <span className={task.done ? 'checked-text' : ''}>{task.text}</span>
@@ -428,7 +475,7 @@ export default function App() {
                   <button className="btn btn-primary" onClick={() => { if (quickInput) { store.addQuickTask(quickInput); setQuickInput(''); } }}><Plus size={16}/></button>
                 </div>
                 <div className="checklist-group">
-                  {store.quickTasks.map(t => (
+                  {quickTasks.map(t => (
                     <div key={t.id} className="quick-task-row">
                       <label style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                         <input type="checkbox" checked={t.done} onChange={() => store.toggleQuickTask(t.id)} />
@@ -453,7 +500,7 @@ export default function App() {
                 <button className="btn btn-primary" onClick={() => { if (rewardInput) { store.addReward(rewardInput); setRewardInput(''); } }}><Plus size={16}/></button>
               </div>
               <ul className="reward-list">
-                {store.rewards.map(item => (
+                {rewards.map(item => (
                   <li key={item}>
                     <span>🎁 {item}</span>
                     <button className="btn-icon" onClick={() => store.deleteReward(item)}><Trash2 size={12}/></button>
@@ -469,15 +516,15 @@ export default function App() {
                 <h3 className="card-title">Progress Tracker</h3>
               </div>
               <div className="flex-row" style={{ marginBottom: '12px' }}>
-                <input className="input-field" style={{ marginBottom: 0 }} placeholder="Habit baru..." value={habitName} onChange={e => {}} />
-                <button className="btn btn-primary"><Plus size={16}/></button>
+                <input className="input-field" style={{ marginBottom: 0 }} placeholder="Habit baru..." value={habitName} onChange={e => setHabitName(e.target.value)} onKeyDown={e => e.key === 'Enter' && (store.addTracker(habitName), setHabitName(''))} />
+                <button className="btn btn-primary" onClick={() => { if (habitName) { store.addTracker(habitName); setHabitName(''); } }}><Plus size={16}/></button>
               </div>
               <div className="trackers-list">
-                {store.trackers.map(tracker => {
+                {trackers.map(tracker => {
                   const getTrackerStats = (history) => {
                     let weekly = 0, monthly = 0, yearly = 0;
                     const today = new Date();
-                    history.forEach(dStr => {
+                    (history || []).forEach(dStr => {
                       const d = new Date(dStr);
                       if (d.getFullYear() === today.getFullYear()) yearly++;
                       if (d.getFullYear() === today.getFullYear() && d.getMonth() === today.getMonth()) monthly++;
@@ -488,13 +535,13 @@ export default function App() {
                   };
 
                   const stats = getTrackerStats(tracker.history);
-                  const isDoneToday = tracker.history.includes(todayStr);
+                  const isDoneToday = (tracker.history || []).includes(todayStr);
 
                   return (
                     <div className="tracker-row-card" key={tracker.id}>
                       <div className="tracker-info">
                         <strong>{tracker.name}</strong>
-                        <span>Total: {tracker.history.length} kali</span>
+                        <span>Total: {(tracker.history || []).length} kali</span>
                       </div>
                       <div className="tracker-mini-stats">
                         <span>W: {stats.weekly}</span>
@@ -525,11 +572,11 @@ export default function App() {
                 <button className="btn btn-sm btn-danger" onClick={() => store.addMistake('Buka analytics YT/CapCut di luar hari Minggu')}>Buka analitik</button>
               </div>
               <div className="flex-row mt-2">
-                <input className="input-field" style={{ marginBottom: 0 }} placeholder="Input kesalahan custom..." value={customMistake} onChange={e => setCustomMistake(e.target.value)} />
+                <input className="input-field" style={{ marginBottom: 0 }} placeholder="Input kesalahan custom..." value={customMistake} onChange={e => setCustomMistake(e.target.value)} onKeyDown={e => e.key === 'Enter' && (store.addMistake(customMistake), setCustomMistake(''))} />
                 <button className="btn btn-primary" onClick={() => { if (customMistake) { store.addMistake(customMistake); setCustomMistake(''); } }}><Plus size={16}/></button>
               </div>
               <div className="mistakes-log">
-                {store.mistakes.map(m => (
+                {mistakes.map(m => (
                   <div key={m.id} className="mistake-log-item">
                     <span><strong>[{m.date}]</strong> {m.text}</span>
                     <button className="btn-icon" onClick={() => store.deleteMistake(m.id)}><Trash2 size={12}/></button>
@@ -545,11 +592,11 @@ export default function App() {
                 <h3 className="card-title">Distraction Blocklist</h3>
               </div>
               <div className="flex-row">
-                <input className="input-field" style={{ marginBottom: 0 }} placeholder="Tambah blocklist..." value={blockInput} onChange={e => setBlockInput(e.target.value)} />
+                <input className="input-field" style={{ marginBottom: 0 }} placeholder="Tambah blocklist..." value={blockInput} onChange={e => setBlockInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && (store.addBlocklistItem(blockInput), setBlockInput(''))} />
                 <button className="btn btn-primary" onClick={() => { if (blockInput) { store.addBlocklistItem(blockInput); setBlockInput(''); } }}><Plus size={16}/></button>
               </div>
               <div className="blocklist-chips mt-4">
-                {store.blocklist.map(item => (
+                {blocklist.map(item => (
                   <span className="block-chip" key={item}>
                     {item}
                     <button className="btn-close-chip" onClick={() => store.deleteBlocklistItem(item)}>×</button>
@@ -570,7 +617,7 @@ export default function App() {
           <div className="card">
             <h3 className="card-title" style={{ marginBottom: '16px' }}>Tangga Income — Proyeksi Realistis UMR ke Top 1%</h3>
             <div className="ladder-list">
-              {store.ladder.map(item => (
+              {ladder.map(item => (
                 <div 
                   key={item.id} 
                   className={`ladder-row-item ${store.currentLadderStage === item.id ? 'active' : ''}`}
@@ -610,7 +657,7 @@ export default function App() {
             </div>
 
             <div className="reviews-history mt-4">
-              {store.weeklyReviews.map(review => (
+              {weeklyReviews.map(review => (
                 <div key={review.id} className="history-review-card">
                   <button className="btn-delete-review" onClick={() => store.deleteWeeklyReview(review.id)}><Trash2 size={14}/></button>
                   <div className="review-flex-cols">
@@ -641,14 +688,14 @@ export default function App() {
             <div className="reframe-form">
               <div className="flex-row">
                 <input className="input-field" style={{ marginBottom: 0 }} placeholder="Pikiran lama..." value={refOld} onChange={e => setRefOld(e.target.value)} />
-                <span style={{ color: 'var(--muted2)' }}>→</span>
+                <span style={{ color: 'var(--text-muted)' }}>→</span>
                 <input className="input-field" style={{ marginBottom: 0 }} placeholder="Reframe baru..." value={refNew} onChange={e => setRefNew(e.target.value)} />
                 <button className="btn btn-primary" onClick={handleAddReframe}>Simpan</button>
               </div>
             </div>
 
             <div className="reframes-list mt-4">
-              {store.reframes.map(item => (
+              {reframes.map(item => (
                 <div className="reframe-row-card" key={item.id}>
                   <div className="reframe-old-text">{item.old}</div>
                   <div className="reframe-arrow-icon">→</div>
@@ -720,13 +767,14 @@ function DeepWorkConsole({ store }) {
     }
   };
 
-  // Calculate deep work stats
+  // Calculate deep work stats safely
+  const deepWorkLogs = store.deepWorkLogs || [];
   const todayStr = new Date().toISOString().split('T')[0];
-  const todayLog = store.deepWorkLogs.find(l => l.date === todayStr);
+  const todayLog = deepWorkLogs.find(l => l.date === todayStr);
   const deepWorkToday = todayLog ? todayLog.minutes : 0;
   
-  const totalMinutes = store.deepWorkLogs.reduce((acc, curr) => acc + curr.minutes, 0);
-  const totalSessions = store.deepWorkLogs.length;
+  const totalMinutes = deepWorkLogs.reduce((acc, curr) => acc + curr.minutes, 0);
+  const totalSessions = deepWorkLogs.length;
   const averageSession = totalSessions > 0 ? (totalMinutes / totalSessions).toFixed(0) : 0;
 
   // Last 7 days chart array
@@ -736,7 +784,7 @@ function DeepWorkConsole({ store }) {
       const d = new Date();
       d.setDate(d.getDate() - i);
       const dStr = d.toISOString().split('T')[0];
-      const log = store.deepWorkLogs.find(l => l.date === dStr);
+      const log = deepWorkLogs.find(l => l.date === dStr);
       data.push({
         label: d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }),
         value: log ? log.minutes : 0
